@@ -26,11 +26,11 @@ SLACK_CHANNEL = os.environ.get('SLACK_CHANNEL_ID')
 
 KEYWORDS = [
     "NLP",
-    "NLP depression"
+    "NLP depression",
     "NLP mental health",
     "自然言語処理 メンタルヘルス",
     "LLM",
-    "LLM depression"
+    "LLM depression",
     "AI 心理学",
     "GPT counseling",
     "言語モデル カウンセリング",
@@ -48,7 +48,7 @@ DAYS_TO_LOOK_BACK = 3
 
 
 def get_date_n_days_ago(n):
-    return (datetime.now() - timedelta(days=n)).strftime('%Y-%m-%d')
+    return (datetime.now() - timedelta(days=n)).strftime('%Y%m%d')
 
 
 def summarize_with_gpt(text, max_length=150):
@@ -56,17 +56,18 @@ def summarize_with_gpt(text, max_length=150):
         return "テキストが提供されていません"
 
     try:
-        response = client.responses.create(
-            model="o4-mini",
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "メンタルヘルスへのNLP/LLMの応用またはNLP/LLMの最新技術に関する以下のテキストを100〜150字の日本語で要約してください。重要なポイントだけを簡潔にまとめ、技術的内容があれば優先的に含めてください。"}
+                {"role": "system", "content": "メンタルヘルスへのNLP/LLMの応用またはNLP/LLMの最新技術に関する以下のテキストを100〜150字の日本語で要約してください。重要なポイントだけを簡潔にまとめ、技術的内容があれば優先的に含めてください。"},
+                {"role": "user", "content": text}
             ],
             max_tokens=200
         )
-        return response.choices[0].message['content'].strip()
+        return response.choices[0].message.content.strip()
     except Exception as e:
         print(f"GPT API エラー: {e}")
-        return text[:max_length] + "..."
+        return text[:max_length // 2] + "..."
 
 
 def fetch_from_reddit():
