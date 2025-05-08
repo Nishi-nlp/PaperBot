@@ -40,7 +40,7 @@ KEYWORDS = [
     "NLP for mental health"
 ]
 
-openai.api_key = OPENAI_API_KEY
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 slack_client = WebClient(token=SLACK_BOT_TOKEN)
 
@@ -56,7 +56,7 @@ def summarize_with_gpt(text, max_length=150):
         return "テキストが提供されていません"
 
     try:
-        response = openai.ChatCompletion.create(
+        response = client.responses.create(
             model="o4-mini",
             messages=[
                 {"role": "system", "content": "メンタルヘルスへのNLP/LLMの応用またはNLP/LLMの最新技術に関する以下のテキストを100〜150字の日本語で要約してください。重要なポイントだけを簡潔にまとめ、技術的内容があれば優先的に含めてください。"}
@@ -94,7 +94,7 @@ def fetch_from_reddit():
                         content = submission.selftext if submission.selftext else submission.title
                         summary = summarize_with_gpt(content)
 
-                        resutls.append({
+                        results.append({
                             'source': f'Reddit (r/{subreddit_name})',
                             'title': submission.title,
                             'url': f"https://www.reddit.com{submission.permalink}",
