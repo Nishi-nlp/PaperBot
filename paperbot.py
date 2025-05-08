@@ -6,7 +6,7 @@ import requests
 import feedparser
 import tweepy
 import praw
-import openai
+from openai import OpenAI
 from datetime import datetime, timedelta
 from googleapiclient.discovery import build
 from slack_sdk import WebClient
@@ -40,7 +40,7 @@ KEYWORDS = [
     "NLP for mental health"
 ]
 
-client = OpenAI(api_key=OPENAI_API_KEY)
+client = OpenAI()
 
 slack_client = WebClient(token=SLACK_BOT_TOKEN)
 
