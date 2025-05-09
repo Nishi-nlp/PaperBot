@@ -106,6 +106,8 @@ def fetch_from_reddit():
                             'engagement': submission.score
                         })
 
+                time.sleep(2)
+            time.sleep(5)
         return results
     except Exception as e:
         print(f"Reddit API エラー: {e}")
@@ -153,17 +155,23 @@ def fetch_from_google():
         print(f"Google API エラー: {e}")
         return []
 
-
+arXiv_KEYWORDS = [
+    "cs.AI",
+    "cs.CL"
+]
 def fetch_from_arxiv():
     try:
         results = []
 
-        for keyword in KEYWORDS:
+        for keyword in arXiv_KEYWORDS:
             search_date = get_date_n_days_ago(DAYS_TO_LOOK_BACK)
             query = f"{keyword} AND submittedDate:[{search_date} TO *]"
 
             url = f"http://export.arxiv.org/api/query?search_query={query.replace(' ', '+')}&sortBy=submittedDate&sortOrder=descending&max_results=10"
             feed = feedparser.parse(url)
+            print(feed.entries)
+            print(feed.status)
+            print(feed.bozo_exception)
 
             for entry in feed.entries:
                 abstract = entry.summary.replace('\n', ' ')
