@@ -93,7 +93,7 @@ def fetch_from_reddit():
                 submissions = subreddit.search(keyword, time_filter='week',limit=5)
 
                 for submission in submissions:
-                    if submission.score >= 20:
+                    if submission.score >= 0:
                         content = submission.selftext if submission.selftext else submission.title
                         summary = summarize_with_gpt(content)
 
