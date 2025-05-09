@@ -72,6 +72,7 @@ def summarize_with_gpt(text, max_length=150):
 
 def fetch_from_reddit():
     if not REDDIT_CLIENT_ID or not REDDIT_CLIENT_SECRET:
+        print("Reddit APIキーが設定されていません。")
         return []
 
     try:
@@ -80,7 +81,8 @@ def fetch_from_reddit():
             client_secret=REDDIT_CLIENT_SECRET,
             user_agent="PaperBot/1.0 (by /u/Initial_Sherbet_7095)"
         )
-
+        print(reddit.subreddit('MachineLearning').display_name)
+        print("Reddit API認証成功！")
         results = []
         subreddits = ['MachineLearning', 'NLP', 'LanguageTechnology', 'psychology', 'mentalhealth', 'psychotherapy']
 
